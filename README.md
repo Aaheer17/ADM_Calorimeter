@@ -21,3 +21,10 @@ git clone https://github.com/lucidrains/autoregressive-diffusion-pytorch.git
 cd autoregressive-diffusion-pytorch
 pip install autoregressive-diffusion-pytorch
 pip install diffusers transformers accelerate
+```
+# 🧪 Running the Model
+
+To train the layer model and generate samples, follow this command
+
+```bash
+sbatch submit.sh
