@@ -8,11 +8,12 @@ class Documenter:
     """ Class that makes network runs self-documenting. All output data including the saved
     model, log file, parameter file and plots are saved into an output folder. """
 
-    def __init__(self, run_name, existing_run=None, read_only=False):
+    def __init__(self, run_name,base_dir, existing_run=None, read_only=False):
         """ If existing_run is None, a new output folder named as run_name prefixed by date
         and time is created. stdout and stderr are redirected into a log file. The method
         close is registered to be automatically called when the program exits. """
         self.run_name = run_name
+        self.base_dir=base_dir
         script_dir = os.path.dirname(os.path.abspath(__file__))
         if existing_run is None:
             now = datetime.now()
@@ -22,7 +23,7 @@ class Documenter:
                 self.basedir = os.path.join(script_dir, "/results", full_run_name)
                 print("slef.basedir: ", self.basedir)
                 try:
-                    self.basedir='/project/biocomplexity/fa7sa/Diffusion_multi_step/src/results/'+full_run_name
+                    self.basedir=base_dir+full_run_name
                     os.mkdir(self.basedir)
                     break
                 except FileExistsError:
