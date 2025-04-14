@@ -220,3 +220,54 @@ def loss_cbvae(recon_x, x): # mu, logvar):
     LOGC = -sumlogC(recon_x)
     #return BCE + KLD + LOGC
     return BCE + LOGC
+def plot_losses(train_losses, val_losses, title="Training and Validation Loss", xlabel="Epoch", ylabel="Loss",file_name='loss.png'):
+    """
+    Plots training and validation losses on the same plot.
+
+    Args:
+        train_losses (list): A list of training loss values.
+        val_losses (list): A list of validation loss values.
+        title (str): Title of the plot.
+        xlabel (str): Label for the x-axis.
+        ylabel (str): Label for the y-axis.
+    """
+    plt.figure(figsize=(8, 5))
+    plt.plot(train_losses, marker='o', linestyle='-', color='b', label="Training Loss")
+    plt.plot(val_losses, marker='o', linestyle='-', color='r', label="Validation Loss")
+    
+    plt.xlabel(xlabel)
+    plt.ylabel(ylabel)
+    plt.title(title)
+    plt.grid(True, linestyle='--', alpha=0.6)
+    plt.legend()
+    plt.savefig(file_name)
+    #plt.show()
+
+    
+def plot_mean_and_std_samples(samples,reference,file_loc,name='mean.pdf'):
+            
+    sample_means = samples.mean(axis=0)
+    ref_means = reference.mean(axis=0)
+    sample_stds = samples.std(axis=0)
+    ref_stds = reference.std(axis=0)
+
+    plt.figure(figsize=(10, 4))
+    plt.plot(ref_means.cpu().numpy(), label="Reference Mean", marker='o')
+    plt.plot(sample_means.cpu().numpy(), label="Generated Mean", marker='x')
+    plt.title("Mean per Feature")
+    plt.legend()
+    plt.xlabel("Feature Index")
+    plt.ylabel("Mean")
+    plt.grid(True)
+    plt.savefig(file_loc / 'mean.pdf')
+
+    plt.figure(figsize=(10, 4))
+    plt.plot(ref_stds.cpu().numpy(), label="Reference Std", marker='o')
+    plt.plot(sample_stds.cpu().numpy(), label="Generated Std", marker='x')
+    plt.title("Std per Feature")
+    plt.legend()
+    plt.xlabel("Feature Index")
+    plt.ylabel("Standard Deviation")
+    plt.grid(True)
+
+    plt.savefig(file_loc / 'std.pdf')
