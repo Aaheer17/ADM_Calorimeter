@@ -1,6 +1,6 @@
 import argparse
 import os
-os.environ['PYTORCH_CUDA_ALLOC_CONF'] = 'expandable_segments:True'
+#os.environ['PYTORCH_CUDA_ALLOC_CONF'] = 'expandable_segments:True'
 import shutil
 import yaml
 import torch
@@ -8,8 +8,8 @@ torch.cuda.empty_cache()
 from documenter import Documenter
 from datasets import *
 from transforms import *
-from challenge_files import *
-from challenge_files import evaluate # avoid NameError: 'evaluate' is not defined
+#from challenge_files import *
+#from challenge_files import evaluate # avoid NameError: 'evaluate' is not defined
 from prep_data import *
 import random
 from trainer import *
