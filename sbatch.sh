@@ -13,8 +13,5 @@ module load miniforge
 #module load texlive
 
 source activate ardiff
-# source activate torch_gpu_renew
-# export PATH=~/bin:$PATH
-# export PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True
-#which dvipng
+
 python3 main.py /project/biocomplexity/fa7sa/Diffusion_multi_step/config.yaml --use_cuda -l 'loss.png'
