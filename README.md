@@ -24,6 +24,7 @@ pip install diffusers transformers accelerate
 ```
 # 🧪 Running the Model
 
+Make sure you update the location of the train and eval dataset, the XML file, and the output directory in the config file(config.yml)
 To train the layer model and generate samples, follow this command
 
 ```bash
