@@ -6,14 +6,13 @@ import yaml
 import torch
 torch.cuda.empty_cache()
 from documenter import Documenter
-from energyTransformer import *
-from ddpm_conditional import *
 from datasets import *
 from transforms import *
 from challenge_files import *
 from challenge_files import evaluate # avoid NameError: 'evaluate' is not defined
 from prep_data import *
 import random
+from trainer import *
 #import wandb
 
 def set_seed(seed=42):
@@ -28,7 +27,7 @@ def set_seed(seed=42):
 
 
 def main():
-    set_seed(42)
+    set_seed(1042)
     parser = argparse.ArgumentParser(description='Fast Calorimeter Simulation')
     parser.add_argument('param_file', help='yaml parameters file')
     parser.add_argument('-c', '--use_cuda', action='store_true', default=False,)
@@ -37,6 +36,7 @@ def main():
     parser.add_argument('-ep', '--epoch', default='')
     parser.add_argument('-g', '--generate', action='store_true', default=False)
     parser.add_argument('--which_cuda', default=0) 
+    parser.add_argument('-l','--loss_file_name',default='loss.png')
 
     args = parser.parse_args()
     print(args.param_file)
@@ -46,12 +46,12 @@ def main():
     use_cuda = torch.cuda.is_available() and args.use_cuda
 
     device = f'cuda:{args.which_cuda}' if use_cuda else 'cpu'
-    #print('device: ', device)
+    print('device: ', device,flush=True)
 
     if args.model_dir:
-        doc = Documenter(params['run_name'], existing_run=args.model_dir)
+        doc = Documenter(params['run_name'], base_dir=params['base_dir'],existing_run=args.model_dir)
     else:
-        doc = Documenter(params['run_name'])
+        doc = Documenter(params['run_name'],base_dir=params['base_dir'] )
 
     try:
         shutil.copy(args.param_file, doc.get_file('params.yaml'))
@@ -71,16 +71,33 @@ def main():
     dataset_preparer = prep_dataset(params=params, device=device,doc=doc)
 
     # Call the prepare_training function
-    train_loader, val_loader,bound=dataset_preparer.prepare_training()
-    data=[train_loader, val_loader,bound]
-    diffuser = Diffusion(noise_steps=1000, num_layers=45,device=device, params=params,doc=doc)
-    # with wandb.init(project="train_calorimeter", group="train", config=config):
-    diffuser.prepare(data)
-    diffuser.fit(doc)
+    train_loader, val_loader=dataset_preparer.prepare_training()
+    data=[train_loader, val_loader]
     
-    # save parameter file with new entries
-    # with open(doc.get_file('final_params.yaml'), 'w') as f:
-    #     yaml.dump(model.params, f, default_flow_style=False)
+    
+    model = AutoregressiveDiffusion(
+    dim_input = 1,
+    dim = 16,
+    max_seq_len = 45,
+    depth = 2 )
+
+    trainer = ModelTrainer(
+    model = model,
+        learning_rate=params.get('lr',5.e-3),
+        num_train_steps=params.get('epochs',5),
+    train_dataloader= data[0],
+        val_dataloader=data[1],args=args
+    )
+    print("before calling trainer....",flush=True)
+    trainer()
+    
+    trainer.sampling_layers(params=params,
+    dataset_preparer=dataset_preparer,
+    model=model,
+    args=args,
+    device=trainer.accelerator.device,  # or just torch.device('cuda') / 'cpu'
+    doc=doc  # or None if you're not using a documenter
+)
 
 if __name__=='__main__':
     main()
