@@ -22,6 +22,8 @@ cd autoregressive-diffusion-pytorch
 pip install autoregressive-diffusion-pytorch
 pip install diffusers transformers accelerate
 ```
+## 🧬 Make sure to download the 'challenge_files' folder from the following link:
+[challenge_files](https://github.com/luigifvr/calo_dreamer/tree/master/src/challenge_files)
 # 🧪 Running the Model
 
 Make sure you update the location of the train and eval dataset, the XML file, and the output directory in the config file(config.yml)
