@@ -1,10 +1,15 @@
-## Environment Creation
+# 🧪 Autoregressive Diffusion Setup with Hugging Face
 
-First, git clone this GitHub repository [https://github.com/lucidrains/denoising-diffusion-pytorch](https://github.com/lucidrains/autoregressive-diffusion-pytorch). Follow their instruction to install autoregressive-diffusion-pytorch.
-Next we need Diffuser, Transformer from Huggingface. Run the following command for this:
-'''
-pip install diffusers transformers accelerate
-'''
-## To run the model for DS2
+This guide walks you through setting up a clean environment to run autoregressive diffusion models using [lucidrains' denoising-diffusion-pytorch](https://github.com/lucidrains/denoising-diffusion-pytorch) along with Hugging Face's `diffusers`, `transformers`, and `accelerate`.
 
-Run `sbatch -o xyz.out sbatch.sh`
+---
+
+## 🧬 Step 1: Create and Activate a Conda Environment (via Miniforge)
+
+Before starting, make sure you have [Miniforge](https://github.com/conda-forge/miniforge) installed.
+
+Then create and activate a new environment:
+
+```bash
+conda create -n custom_name python=3.9
+conda activate custom_name
