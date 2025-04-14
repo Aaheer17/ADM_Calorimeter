@@ -1,16 +1,17 @@
-run_name: d2_energy_model_AR_full
+run_name: epoch_1_sample_1000
 dtype: float32
 
 # Data
 hdf5_file: /project/biocomplexity/fa7sa/calochallenge_datasets/dataset_2/dataset_2_1.hdf5
 eval_hdf5_file: /project/biocomplexity/fa7sa/calochallenge_datasets/dataset_2/dataset_2_2.hdf5
 xml_filename: /project/biocomplexity/fa7sa/calo_dreamer/src/challenge_files/binning_dataset_2.xml
-val_frac: 0.00001
+base_dir: /project/biocomplexity/fa7sa/Diffusion_multi_step/autoregressive-diffusion-pytorch/
+val_frac: 0.10
 eps: 1.0e-10
 particle_type: electron
 eval_dataset: "2"
 shape: [45]
-
+base_dir: /project/biocomplexity/fa7sa/Diffusion_multi_step/autoregressive-diffusion-pytorch
 # Preprocessing
 transforms:
     #ScaleVoxels:
@@ -34,7 +35,7 @@ transforms:
     Reshape:
         shape: [45, 1]
         
-batch_size: 128
+batch_size: 1024
 
 # Model for energytransformer
 model_type: energy
@@ -59,9 +60,9 @@ normalization: LayerNorm
 
 #arguments for Diffusion for energy network
 emd_dim: 64 # time and conditional embedding size
-lr: 1.e-3
+lr: 5.e-3
 max_lr: 2.e-3
-epochs: 50
+epochs: 1
 
 
 
