@@ -24,8 +24,6 @@ from autoregressive_unet import AutoregressiveDiffusion
 from documenter import Documenter
 from datasets import *
 from transforms import *
-from challenge_files import *
-from challenge_files import evaluate # avoid NameError: 'evaluate' is not defined
 from prep_data import *
 import random
 from utils import *
