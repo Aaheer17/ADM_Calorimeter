@@ -7,8 +7,8 @@ import yaml
 import torch
 torch.cuda.empty_cache()
 from documenter import Documenter
-from energyTransformer import *
-from ddpm_conditional import *
+# from energyTransformer import *
+# from ddpm_conditional import *
 from datasets import *
 from transforms import *
 from challenge_files import *
@@ -58,7 +58,7 @@ class prep_dataset():
 
         print("train_model: Preparing model training")
 
-        self.train_loader, self.val_loader, self.bounds = get_loaders(
+        self.train_loader, self.val_loader = get_loaders(
             self.params.get('hdf5_file'),
             self.params.get('particle_type'),
             self.params.get('xml_filename'),
@@ -76,5 +76,5 @@ class prep_dataset():
         self.n_trainbatches = len(self.train_loader)
         self.n_traindata = self.n_trainbatches*self.batch_size
 
-        return self.train_loader, self.val_loader, self.bounds
+        return self.train_loader, self.val_loader
         
