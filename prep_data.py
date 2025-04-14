@@ -11,8 +11,8 @@ from documenter import Documenter
 # from ddpm_conditional import *
 from datasets import *
 from transforms import *
-from challenge_files import *
-from challenge_files import evaluate # avoid NameError: 'evaluate' is not defined
+#from challenge_files import *
+#from challenge_files import evaluate # avoid NameError: 'evaluate' is not defined
 
 def get_transform_fn(name, params,doc):
     """Maps transform names to actual functions and passes parameters correctly."""
