@@ -220,28 +220,42 @@ def loss_cbvae(recon_x, x): # mu, logvar):
     LOGC = -sumlogC(recon_x)
     #return BCE + KLD + LOGC
     return BCE + LOGC
-def plot_losses(train_losses, val_losses, title="Training and Validation Loss", xlabel="Epoch", ylabel="Loss",file_name='loss.png'):
+def plot_losses(train_losses, val_losses, mse_values, 
+                title = "Training, Validation Loss, and MSE", 
+                xlabel= "Epoch", ylabel="Loss", 
+                file_name='loss.png', file_path='.'):
     """
-    Plots training and validation losses on the same plot.
+    Plots training loss, validation loss, and MSE on the same plot and saves to file_path.
 
     Args:
         train_losses (list): A list of training loss values.
         val_losses (list): A list of validation loss values.
+        mse_values (list): A list of MSE values from sampling validation.
         title (str): Title of the plot.
         xlabel (str): Label for the x-axis.
         ylabel (str): Label for the y-axis.
+        file_name (str): The name of the file to save the plot.
+        file_path (str): The directory to save the plot.
     """
-    plt.figure(figsize=(8, 5))
+    plt.figure(figsize=(8, 6))
     plt.plot(train_losses, marker='o', linestyle='-', color='b', label="Training Loss")
     plt.plot(val_losses, marker='o', linestyle='-', color='r', label="Validation Loss")
-    
+    plt.plot(mse_values, marker='o', linestyle='-', color='g', label="Sampling Validation Loss")
+
     plt.xlabel(xlabel)
     plt.ylabel(ylabel)
     plt.title(title)
     plt.grid(True, linestyle='--', alpha=0.6)
     plt.legend()
-    plt.savefig(file_name)
-    #plt.show()
+
+    # Ensure the directory exists
+    os.makedirs(file_path, exist_ok=True)
+    save_path = os.path.join(file_path, file_name)
+
+    plt.savefig(save_path)
+    plt.close()  # Close the plot to prevent memory issues if called multiple times
+    print(f"Plot saved at: {save_path}")
+
 
     
 def plot_mean_and_std_samples(samples,reference,file_loc,name='mean.pdf'):
